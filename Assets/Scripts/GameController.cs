@@ -11,7 +11,8 @@ public class GameController : MonoBehaviour
     public GameObject dataObject, parentObject;
     public Transform topLimit, bottomLimit; 
     public ScrollRect scrollRect;
-    public Button searchBtn;
+    public Button searchBtn,
+            popUpBtn;
     public InputField inputField;
     public Sprite highlightImage;
     int MAX_VISIBLE_CONTENT_COUNT,
@@ -28,10 +29,12 @@ public class GameController : MonoBehaviour
 
     private void OnEnable() {
         searchBtn.onClick.AddListener(SearchKeyWord);
+        popUpBtn.onClick.AddListener(DisablePopUp);
     }
 
     private void OnDisable() {
         searchBtn.onClick.RemoveListener(SearchKeyWord);
+        popUpBtn.onClick.RemoveListener(DisablePopUp);
     }
 
     IEnumerator GetData(){
@@ -55,6 +58,14 @@ public class GameController : MonoBehaviour
         }
     }
 
+    void EnablerPopUp(){
+        popUpBtn.transform.parent.gameObject.SetActive(true);
+    }
+
+    void DisablePopUp(){
+        popUpBtn.transform.parent.gameObject.SetActive(false);
+    }
+
     string GetTopDataContent(){
         raycastHit = Physics2D.Raycast(topLimit.position, transform.TransformDirection(Vector3.forward), Mathf.Infinity);
         // Debug.DrawRay(topLimit.position, transform.TransformDirection(Vector3.forward), Color.white,Mathf.Infinity);
@@ -67,7 +78,7 @@ public class GameController : MonoBehaviour
     void SearchKeyWord(){
         index = CompareText(inputField.text);
         if(index < 0){
-
+            EnablerPopUp();
         }else{
             index = GetUpperLimitIndex(index);
             Debug.Log("Start Index : "+index);
@@ -98,8 +109,9 @@ public class GameController : MonoBehaviour
     int GetUpperLimitIndex(int matchIndex){
         int startIndex = 1;
         while(matchIndex > (startIndex + (MAX_VISIBLE_CONTENT_COUNT-1))){
-            startIndex += MAX_VISIBLE_CONTENT_COUNT-1;
+            startIndex = startIndex + (MAX_VISIBLE_CONTENT_COUNT-1);
         }
+        // startIndex = 
         return startIndex;
     }
 
