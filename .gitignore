@@ -21,6 +21,7 @@
 
 # Visual Studio cache directory
 .vs/
+.vscode/
 
 # Gradle cache directory
 .gradle/
@@ -54,6 +55,7 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+*.zip
 
 # Crashlytics generated file
 crashlytics-build.properties
